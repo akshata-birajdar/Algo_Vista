@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BFS Visualization</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      background: linear-gradient(to right, #090c0e, #1a2129);
+      color: #ecf0f1;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2 {
+      margin-top: 20px;
+      font-size: 32px;
+      color: white;
+      text-shadow: 2px 2px #000;
+    }
+
+    p {
+      max-width: 800px;
+      margin: 10px auto;
+      padding: 0 20px;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    canvas {
+      border: 2px solid #7f8c8d;
+      background: #ecf0f1;
+      box-shadow: 0 0 18px rgba(0, 255, 0, 0.5);
+      cursor: pointer;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    button, label {
+      margin: 10px;
+      padding: 12px 24px;
+      background:  #05be4c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    button:hover, label:hover {
+      background:  #069b3d;
+    }
+
+    #backButton {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #444342;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+      z-index: 1000;
+    }
+
+    #backButton:hover {
+      background: #1a281f;
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 100px;
+      border-radius: 6px;
+      border: 1px solid #bdc3c7;
+      margin-left: 10px;
+    }
+
+    #queueDisplay, #traversalOrder {
+      margin-top: 20px;
+      font-size: 18px;
+      color:black;
+      background: white;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <a href="D:\ALGO VISTA\path finding7\index7.html">
+    <button id="backButton">Go Back</button>
+  </a>
+  <h2>Breadth-First Search (BFS)</h2>
+  <p>Breadth-First Search (BFS) is a graph traversal algorithm that explores all vertices at the current level before moving to the next level. It uses a queue to maintain the order of exploration and is often used to find the shortest path in unweighted graphs.</p>
+
+  <label>
+    Source Node:
+    <input type="number" id="sourceNode" min="0" placeholder="0">
+  </label>
+  <button onclick="runBFSFromInput()">Run BFS</button>
+  <label>
+    Directed Graph
+    <input type="checkbox" id="directedToggle" checked>
+  </label>
+
+  <br>
+  <canvas id="canvas" width="600" height="400"></canvas>
+  <br>
+  <div id="queueDisplay">Queue: []</div>
+  <div id="traversalOrder">Traversal: []</div>
+<br>
+  <script>
+    
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const directedToggle = document.getElementById("directedToggle");
+    const sourceInput = document.getElementById("sourceNode");
+    const queueDisplay = document.getElementById("queueDisplay");
+    const traversalDisplay = document.getElementById("traversalOrder");
+
+    let nodes = [];
+    let edges = [];
+    let selectedNode = null;
+    let draggingNode = null;
+    let tempEdge = null;
+
+    function drawArrow(from, to) {
+      const headlen = 10;
+      const angle = Math.atan2(to.y - from.y, to.x - from.x);
+
+      const tx = to.x - 20 * Math.cos(angle);
+      const ty = to.y - 20 * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(tx, ty);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(tx - headlen * Math.cos(angle - Math.PI / 6), ty - headlen * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(tx - headlen * Math.cos(angle + Math.PI / 6), ty - headlen * Math.sin(angle + Math.PI / 6));
+      ctx.lineTo(tx, ty);
+      ctx.fillStyle = "#888";
+      ctx.fill();
+    }
+
+    function drawLine(from, to) {
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#888";
+      ctx.lineWidth = 2;
+      edges.forEach(([fromIdx, toIdx]) => {
+        const from = nodes[fromIdx];
+        const to = nodes[toIdx];
+        if (directedToggle.checked) {
+          drawArrow(from, to);
+        } else {
+          drawLine(from, to);
+        }
+      });
+
+      if (tempEdge) {
+        if (directedToggle.checked) {
+          drawArrow({ x: tempEdge.x1, y: tempEdge.y1 }, { x: tempEdge.x2, y: tempEdge.y2 });
+        } else {
+          drawLine({ x: tempEdge.x1, y: tempEdge.y1 }, { x: tempEdge.x2, y: tempEdge.y2 });
+        }
+      }
+
+      nodes.forEach((node, i) => {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 20, 0, Math.PI * 2);
+        ctx.fillStyle = node.visited ? "#2ecc71" : "#3498db";
+        ctx.fill();
+        ctx.strokeStyle = "#333";
+        ctx.stroke();
+        ctx.fillStyle = "white";
+        ctx.font = "14px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(i, node.x, node.y);
+      });
+    }
+
+    canvas.addEventListener("mousedown", (e) => {
+      const { x, y } = getMousePos(e);
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        if (dist(x, y, n.x, n.y) < 20) {
+          draggingNode = i;
+          return;
+        }
+      }
+    });
+
+    canvas.addEventListener("mousemove", (e) => {
+      const { x, y } = getMousePos(e);
+      if (draggingNode !== null) {
+        nodes[draggingNode].x = x;
+        nodes[draggingNode].y = y;
+      }
+      if (selectedNode !== null && typeof selectedNode === "number") {
+        const from = nodes[selectedNode];
+        tempEdge = { x1: from.x, y1: from.y, x2: x, y2: y };
+      }
+      draw();
+    });
+
+    canvas.addEventListener("mouseup", () => {
+      draggingNode = null;
+    });
+
+    canvas.addEventListener("click", (e) => {
+      const { x, y } = getMousePos(e);
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        if (dist(x, y, n.x, n.y) < 20) {
+          if (selectedNode === null) {
+            selectedNode = i;
+          } else if (selectedNode !== i) {
+            if (!edges.some(([a, b]) => a === selectedNode && b === i)) {
+              edges.push([selectedNode, i]);
+            }
+            selectedNode = null;
+            tempEdge = null;
+            draw();
+          }
+          return;
+        }
+      }
+
+      nodes.push({ x, y, visited: false });
+      draw();
+    });
+
+    canvas.addEventListener("dblclick", (e) => {
+      const { x, y } = getMousePos(e);
+      for (let i = 0; i < nodes.length; i++) {
+        if (dist(x, y, nodes[i].x, nodes[i].y) < 20) {
+          nodes.splice(i, 1);
+          edges = edges.filter(([a, b]) => a !== i && b !== i).map(([a, b]) => [
+            a > i ? a - 1 : a,
+            b > i ? b - 1 : b,
+          ]);
+          draw();
+          return;
+        }
+      }
+    });
+
+    async function runBFSFromInput() {
+      const start = parseInt(sourceInput.value);
+      if (isNaN(start) || start < 0 || start >= nodes.length) {
+        alert("Please enter a valid source node index.");
+        return;
+      }
+      await runBFS(start);
+    }
+
+    async function runBFS(start = 0) {
+      nodes.forEach(n => n.visited = false);
+      const queue = [start];
+      const visitedOrder = [];
+      nodes[start].visited = true;
+
+      while (queue.length > 0) {
+        const current = queue.shift();
+        visitedOrder.push(current);
+        queueDisplay.textContent = "Queue: [" + queue.join(", ") + "]";
+        traversalDisplay.textContent = "Traversal: [" + visitedOrder.join(", ") + "]";
+        draw();
+        await sleep(500);
+
+        for (let [a, b] of edges) {
+          if (a === current && !nodes[b].visited) {
+            nodes[b].visited = true;
+            queue.push(b);
+          }
+        }
+      }
+      draw();
+    }
+
+    function getMousePos(evt) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+    function dist(x1, y1, x2, y2) {
+      return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+    }
+
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+  
+  </script>
+</body>
+</html>

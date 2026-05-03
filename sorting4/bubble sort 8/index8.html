@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Sort Visualization</title>
+    <link rel="stylesheet" href="style8.css">
+</head><body>
+    <header>
+        <div class="navbar">
+            <button class="back-btn" onclick="history.back()">Back</button>
+            <!-- <img src="img/logo3.png" alt="Logo" class="logo"> -->
+        </div>
+    </header><section class="hero">
+    <h1>Bubble Sort Visualization</h1>
+    <p>
+        Bubble Sort is a simple sorting algorithm that repeatedly steps through the list,
+        compares adjacent elements and swaps them if they are in the wrong order.<br>
+        <strong>Best Case:</strong> O(n) &nbsp; | &nbsp;
+        <strong>Average Case:</strong> O(n<sup>2</sup>) &nbsp; | &nbsp;
+        <strong>Worst Case:</strong> O(n<sup>2</sup>)
+    </p>
+</section>
+
+<section class="visualization">
+    <svg id="bars"></svg>
+</section>
+
+<section class="content">
+    <div class="code-block">
+        <h3>Code Logic</h3>
+        <pre><code>
+
+function bubbleSort(arr) { let n = arr.length; for (let i = 0; i < n - 1; i++) { for (let j = 0; j < n - i - 1; j++) { if (arr[j] > arr[j + 1]) { [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; } } } return arr; } </code></pre> </div> <div class="algo-desc"> <h3>Algorithm Explanation</h3> <p> Bubble sort works by repeatedly swapping the adjacent elements if they are in the wrong order. This process continues until no more swaps are needed, indicating the array is sorted. It's called "bubble" sort because smaller elements "bubble" to the top of the list. </p> </div> </section>
+
+<section class="settings">
+    <div class="controls">
+        <label for="speed">Speed:</label>
+        <input type="range" id="speed" min="1" max="100" value="50">
+
+        <label for="customData">Custom Data (comma-separated):</label>
+        <input type="text" id="customData" placeholder="e.g., 10,30,20,50">
+
+        <button onclick="generateBars()">Generate</button><br>
+        <button onclick="startSort()">Sort</button>
+    </div>
+</section>
+
+<script src="bs.js"></script>
+
+</body></html>

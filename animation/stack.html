@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stack Visualization</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #0e0e0e;
+      color: white;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(to bottom, #0d0e10, #1a1c1f, #2a2d30); /* dark gradient */
+      color: white;
+      padding: 20px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+      position: fixed;
+      height: 100vh;
+    }
+
+    .sidebar h2 {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+
+    .sidebar button {
+      background-color:  #1a281f;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .sidebar button:hover {
+      background-color:  #444342;
+    }
+
+    .main {
+      margin-left: 280px;
+      padding: 30px;
+      flex-grow: 1;
+      text-align: center;
+      color: white;
+    }
+
+    h1 {
+      color: #ccc;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+   
+
+    .code-box {
+      background: linear-gradient(to bottom, #1c1e22, #2a2d30, #3a3d40); /* dark gradient */
+            color: #ecf0f1;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+      font-family: monospace;
+      white-space: pre-line;
+      text-align: left;
+      margin: auto;
+      width: fit-content;
+      
+    }
+
+    .input-section {
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      font-size: 16px;
+      margin-right: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .input-section button {
+      background-color: #05be4c;
+      color: black;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    .input-section button:hover {
+      background-color: white;
+    }
+
+    .stack-container {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .stack-box {
+      width: 120px;
+      height: 50px;
+      background-color: #111;
+      border: 2px solid #05be4c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #05be4c;
+      border-radius: 8px;
+    }
+
+    #status {
+      margin-top: 20px;
+      padding: 10px;
+      display: inline-block;
+      background-color: #e67e22;
+      color: black;
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 40px;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <a href="D:\ALGO VISTA\data Structure6\index6.html"><button>← Go Back</button></a>
+    <h2>Stack Visualizer</h2>
+    <p>→ LIFO Order (Last In, First Out)</p>
+    <p>→ Push to add elements</p>
+    <p>→ Pop to remove top element</p>
+    <br />
+    <h3>Time Complexity</h3>
+    <p>Push: O(1)</p>
+    <p>Pop: O(1)</p>
+    <p>Peek: O(1)</p>
+    <br />
+    <h3>Space: O(n)</h3>
+  </div>
+
+  <div class="main">
+    <h1>🧱 Stack Operation Visualizer</h1>
+    <p>
+      Stacks follow the LIFO (Last In First Out) principle. Push elements to add to the top, and pop to remove the topmost element.
+    </p>
+
+    <div class="code-box">
+stack = []<br>
+push(value):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;stack.append(value)<br>
+pop():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if stack is not empty:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stack.pop()
+    </div>
+
+    <div class="input-section">
+      <input type="text" id="stackInput" placeholder="Enter value" />
+      <button onclick="pushStack()">Push</button>
+      <button onclick="popStack()">Pop</button>
+      <button onclick="resetStack()">Reset</button>
+    </div>
+
+    <div class="stack-container" id="stackContainer"></div>
+    <div id="status"></div>
+
+    <footer>© 2025 AlgoVisualizer | <a href="#" style="color:#05be4c;">GitHub</a></footer>
+  </div>
+
+  <script>
+    const stack = [];
+    const stackContainer = document.getElementById("stackContainer");
+    const status = document.getElementById("status");
+
+    function speak(message) {
+      const synth = window.speechSynthesis;
+      const utter = new SpeechSynthesisUtterance(message);
+      synth.cancel();
+      synth.speak(utter);
+    }
+
+    function playBeep(freq = 500, duration = 200) {
+      const context = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      oscillator.frequency.value = freq;
+      oscillator.type = "sine";
+      oscillator.start();
+      setTimeout(() => oscillator.stop(), duration);
+    }
+
+    function drawStack() {
+      stackContainer.innerHTML = "";
+      stack.forEach(value => {
+        const box = document.createElement("div");
+        box.className = "stack-box";
+        box.innerText = value;
+        stackContainer.appendChild(box);
+      });
+    }
+
+    function pushStack() {
+      const value = document.getElementById("stackInput").value.trim();
+      if (value === "") {
+        status.innerText = "Please enter a value to push.";
+        speak("Enter a value to push.");
+        return;
+      }
+      stack.push(value);
+      drawStack();
+      status.innerText = `${value} pushed to stack.`;
+      speak(`${value} pushed to stack.`);
+      playBeep();
+      document.getElementById("stackInput").value = "";
+    }
+
+    function popStack() {
+      if (stack.length === 0) {
+        status.innerText = "Stack is empty. Cannot pop.";
+        speak("Stack is empty. Cannot pop.");
+        return;
+      }
+      const popped = stack.pop();
+      drawStack();
+      status.innerText = `${popped} popped from stack.`;
+      speak(`${popped} popped from stack.`);
+      playBeep(300);
+    }
+
+    function resetStack() {
+      stack.length = 0;
+      drawStack();
+      status.innerText = "Stack reset.";
+      speak("Stack reset.");
+      playBeep(200);
+    }
+
+    drawStack();
+  </script>
+</body>
+</html>

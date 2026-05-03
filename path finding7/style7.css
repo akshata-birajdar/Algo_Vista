@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: white;
+}
+
+/* Navbar */
+.navbar {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+.logo {
+    width: 155px;
+    cursor: pointer;
+    margin-top: -26px;
+    margin-left: -76px;
+}
+.navbar ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+.navbar ul li {
+    margin: 0 15px;
+}
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px;
+}
+.navbar ul li a:hover {
+    border-bottom: 2px solid  #05be4c;
+}
+
+/* Hero Section */
+.sorting-hero {
+    text-align: center;
+    padding: 60px;
+    background: linear-gradient(135deg, #000000, #222222);
+    color:  #05be4c;
+}
+
+/* Sorting Algorithms Section */
+.sorting-algorithms {
+    text-align: center;
+    padding: 50px;
+}
+.sorting-list {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top:47px ;
+}
+.sorting-card {
+    width: 30%;
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    transition: transform 0.3s;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.sorting-card:hover {
+    transform: scale(1.05);
+}
+.sorting-card img {
+    width: 50px;
+    margin-bottom: -3px;
+
+}
+.sorting-card h4 {
+    color:  #05be4c;
+}
+.sorting-card p {
+    font-size: 14px;
+    color: #ccc;
+}
+.btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #05be4c;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.btn:hover {
+    background:  #069b3d;
+    color: black;
+}
+
+/* Footer */
+footer {
+    background: #222;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+footer a {
+    color:  #05be4c;
+    text-decoration: none;
+}
+.tagline{
+    color: white;
+}

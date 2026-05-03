@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubble Sort Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #101418;
+            display: flex;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+        }
+        .sidebar {
+    width: 300px;
+    background: linear-gradient(to bottom, #0d0e10, #1a1c1f, #2a2d30); /* dark gradient */
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+
+.code-box {
+    background: linear-gradient(to bottom, #1c1e22, #2a2d30, #3a3d40); /* dark gradient */
+    color: #ecf0f1;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 18px rgba(0, 255, 0, 0.5);
+    
+    font-family: monospace;
+    white-space: pre-line;
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+        .content {
+            margin-left: 270px;
+            color: #ccc;
+            flex-grow: 1;
+            text-align: center;
+            padding: 20px;
+        }
+        .sorted-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            position: relative;
+        }
+        .element {
+            width: 50px;
+            height: 50px;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: transform 0.5s;
+            position: relative;
+        }
+        .sorted {
+            background-color: #f39c12 !important;
+        }
+        button {
+            background-color:#05be4c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color:  #069b3d;
+        }
+        .sorting-card:hover {
+    transform: scale(1.05);
+}
+        #backButton {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #1a281f;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+      z-index: 1000;
+    }
+    
+
+    #backButton:hover {
+      background: #444342;
+    }
+        select, input {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .sidebar select {
+  width: 100%;  /* Makes dropdown take full width of sidebar */
+ 
+}
+
+.complexity {
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+     
+
+    </style>
+</head>
+<body>
+<div class="container">
+     <div class="sidebar">
+        <a href="D:\ALGO VISTA\sorting4\index4.html">
+            <button id="backButton">Go Back</button>
+          </a>
+        <br>
+        <br>
+        <br>
+        <h2>Sorting Algorithms</h2>
+        <label for="sortType">Choose a sorting algorithm:</label>
+        <select id="sortType" onchange="changeSortAlgorithm()">
+            <option value="bubble.html">Bubble Sort</option>
+            <option value="00.html">Selection Sort</option>
+            <option value="index.html">Insertion Sort</option>
+            <option value="1.html">Quick Sort</option>
+            <option value="merge">Merge Sort</option>
+        </select>
+
+        <div class="complexity">
+            <h3>Time Complexity</h3>
+            <p><strong>Best Case (Sorted List):</strong> O(n)</p>
+            <p><strong>Average Case:</strong> O(n²)</p>
+            <p><strong>Worst Case (Reversed List):</strong> O(n²)</p>
+            
+            <h3>Space Complexity</h3>
+            <p>O(1) (In-place sorting algorithm, no extra memory required)</p>
+        </div>
+    </div>
+    
+    <div class="content">
+    <h2>Bubble Sort </h2>
+    <p>Bubble Sort is a simple sorting algorithm that repeatedly steps through the list,</p>
+    <p> compares adjacent elements, and swaps them if they are in the wrong order.</p>
+     
+ <br>
+    <div class="sorting-card">
+    <div class="code-box" id="codeBox">
+        for i = 1 to (n - 1):<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;swapped = false<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;for j = 1 to (n - i):<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if arr[j] &lt; arr[j + 1]:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swap(j, j + 1)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;swapped = true<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;if not swapped:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break
+    </div>
+    </div>
+    <br></br>
+    <label for="numElements">Select number of elements:</label>
+    <select id="numElements" onchange="generateInputs()">
+        <option value="">--Select--</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+    </select>
+    
+    <div id="inputContainer" class="hidden">
+        <p>Enter the numbers:</p>
+        <div id="inputs"></div>
+        <button onclick="startBubbleSort()">Sort</button>
+        <button onclick="stopSorting()">Stop</button>
+    </div>
+    
+    <div id="visualization" class="sorted-box hidden"></div>
+ </div>
+</div>
+<script>
+    let sorting = false;
+    
+    function generateInputs() {
+        let numElements = document.getElementById("numElements").value;
+        let inputContainer = document.getElementById("inputContainer");
+        let inputsDiv = document.getElementById("inputs");
+        inputsDiv.innerHTML = "";
+
+        if (numElements) {
+            inputContainer.classList.remove("hidden");
+            for (let i = 0; i < numElements; i++) {
+                let input = document.createElement("input");
+                input.type = "number";
+                input.placeholder = `Element ${i + 1}`;
+                input.value = Math.floor(Math.random() * 100);
+                inputsDiv.appendChild(input);
+            }
+        } else {
+            inputContainer.classList.add("hidden");
+        }
+    }
+    
+    async function startBubbleSort() {
+        sorting = true;
+        let inputs = document.querySelectorAll("#inputs input");
+        let values = Array.from(inputs).map(input => parseInt(input.value));
+        let visualization = document.getElementById("visualization");
+        visualization.innerHTML = "";
+        visualization.classList.remove("hidden");
+        
+        values.forEach(value => {
+            let div = document.createElement("div");
+            div.className = "element";
+            div.textContent = value;
+            visualization.appendChild(div);
+        });
+        
+        await bubbleSortAnimation(values, visualization);
+    }
+    
+    function stopSorting() {
+        sorting = false;
+    }
+    
+    async function bubbleSortAnimation(arr, visualization) {
+        let n = arr.length;
+        let elements = visualization.children;
+        
+        for (let i = 0; i < n - 1; i++) {
+            if (!sorting) return;
+            let swapped = false;
+            for (let j = 0; j < n - i - 1; j++) {
+                if (!sorting) return;
+                elements[j].style.backgroundColor = "red";
+                elements[j + 1].style.backgroundColor = "red";
+                
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                if (arr[j] > arr[j + 1]) {
+                    [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                    elements[j].style.transform = "translateX(60px)";
+                    elements[j + 1].style.transform = "translateX(-60px)";
+                    
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    [elements[j].textContent, elements[j + 1].textContent] = [elements[j + 1].textContent, elements[j].textContent];
+                    elements[j].style.transform = "";
+                    elements[j + 1].style.transform = "";
+                    swapped = true;
+                }
+                elements[j].style.backgroundColor = "#3498db";
+                elements[j + 1].style.backgroundColor = "#3498db";
+            }
+            elements[n - i - 1].classList.add("sorted");
+            await new Promise(resolve => setTimeout(resolve, 800));
+            if (!swapped) break;
+        }
+        
+        Array.from(elements).forEach(el => el.style.backgroundColor = "#f39c12");
+    }
+</script>
+</body>
+</html>
+<script>
+    function changeSortAlgorithm() {
+        var selectBox = document.getElementById("sortType");
+        var selectedValue = selectBox.value;
+    
+        if (selectedValue) {
+            window.location.href = selectedValue;  // Redirects to the selected file
+        }
+    }
+    </script>
+

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quick Sort Visualizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      display: flex;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+    }
+    .sidebar {
+      width: 250px;
+      background-color: #34495e;
+      color: white;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+    .sidebar select {
+      width: 100%;
+    }
+    .code-box {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-line;
+            display: inline-block;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+    .complexity {
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .content {
+      margin-left: 270px;
+      flex-grow: 1;
+      text-align: center;
+      padding: 20px;
+    }
+    .array-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+      position: relative;
+    }
+    .box {
+      width: 40px;
+      height: 40px;
+      background: #aed581;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 18px;
+      transition: transform 0.5s ease, background-color 0.5s ease;
+      position: relative;
+    }
+    .compare {
+      background-color: #ffb74d !important;
+    }
+    .pivot {
+      background-color: #f06292 !important;
+    }
+    .sorted {
+      background-color: #4fc3f7 !important;
+    }
+    .swap {
+      background-color: #9575cd !important;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #388e3c;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    input, select {
+      padding: 6px;
+      font-size: 16px;
+      margin: 5px;
+    }
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="sidebar">
+    <h2>Sorting Algorithms</h2>
+    <label for="sortType">Choose a sorting algorithm:</label>
+    <select id="sortType" onchange="changeSortAlgorithm()">
+      <option value="bubble.html">Bubble Sort</option>
+      <option value="00.html">Selection Sort</option>
+      <option value="index.html">Insertion Sort</option>
+      <option value="1.html" selected>Quick Sort</option>
+      <option value="merge.html">Merge Sort</option>
+    </select>
+
+    <div class="complexity">
+      <h3>Time Complexity</h3>
+      <p><strong>Best Case:</strong> O(n log n)</p>
+      <p><strong>Average Case:</strong> O(n log n)</p>
+      <p><strong>Worst Case:</strong> O(n²)</p>
+
+      <h3>Space Complexity</h3>
+      <p>O(log n) (recursive stack space)</p>
+    </div>
+  </div>
+  <div class="content">
+     <h2>Selection Sort</h2>
+
+        <p>Quick Sort is the speedster of sorting algorithms. It picks a pivot element and then arranges the rest of the
+             elements into two groups: those less than the pivot and those greater. By recursively sorting these groups
+            , Quick Sort efficiently sorts even the largest datasets. It is perfect blend of strategy and speed, 
+            making it one of the most popular sorting techniques.</p>
+      
+            
+        <div class="code-box" id="codeBox">
+            function quickSort(start, end):<br>
+          &nbsp;&nbsp; if start &lt; end:<br>
+          &nbsp;&nbsp;&nbsp; pivot = partition(start, end)<br>
+          &nbsp;&nbsp;&nbsp;  quickSort(start, pivot - 1)<br>
+          &nbsp;&nbsp;&nbsp; quickSort(pivot + 1, end)<br>
+
+         
+      </div>
+      <br><br>
+    <label for="numElements">Select number of elements:</label>
+    <select id="numElements" onchange="generateInputs()">
+      <option value="">--Select--</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+
+    <label for="speedControl">Animation Speed:</label>
+    <select id="speedControl">
+      <option value="1000">Slow</option>
+      <option value="500" selected>Normal</option>
+      <option value="200">Fast</option>
+    </select>
+
+    <div id="inputContainer">
+      <p>Enter the numbers:</p>
+      <div id="inputs"></div>
+      <button onclick="startSort()">Sort</button>
+      <button onclick="stopSorting()">Stop</button>
+    </div>
+
+    <div id="visualization" class="array-container"></div>
+    <div id="message"></div>
+  </div>
+</div>
+
+<script>
+function getSpeed() {
+  return parseInt(document.getElementById("speedControl").value);
+}
+
+const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+function changeSortAlgorithm() {
+  const selected = document.getElementById("sortType").value;
+  if (selected !== "1.html" && selected !== "") {
+    window.location.href = selected;
+  }
+}
+
+function generateInputs() {
+  const num = parseInt(document.getElementById("numElements").value);
+  const inputsDiv = document.getElementById("inputs");
+  inputsDiv.innerHTML = '';
+  if (!isNaN(num) && num > 0) {
+    for (let i = 0; i < num; i++) {
+      const input = document.createElement("input");
+      input.type = "number";
+      input.placeholder = `Element ${i+1}`;
+      input.value = Math.floor(Math.random() * 100);
+      inputsDiv.appendChild(input);
+    }
+  }
+}
+
+function drawBoxes(array, highlightIndices = {}, label = '') {
+  const container = document.getElementById("visualization");
+  container.innerHTML = '';
+  array.forEach((val, index) => {
+    const box = document.createElement("div");
+    box.className = "box";
+    box.textContent = val;
+    if (highlightIndices.pivot === index) box.classList.add("pivot");
+    if (highlightIndices.compare?.includes(index)) box.classList.add("compare");
+    if (highlightIndices.swap?.includes(index)) box.classList.add("swap");
+    if (highlightIndices.sorted?.includes(index)) box.classList.add("sorted");
+    container.appendChild(box);
+  });
+  document.getElementById("message").textContent = label;
+}
+
+async function animateSwapVisual(i, j) {
+  const container = document.getElementById("visualization");
+  const boxes = container.querySelectorAll(".box");
+
+  const box1 = boxes[i];
+  const box2 = boxes[j];
+
+  const dx = box2.offsetLeft - box1.offsetLeft;
+
+  box1.style.transform = `translateX(${dx}px)`;
+  box2.style.transform = `translateX(${-dx}px)`;
+
+  await sleep(getSpeed());
+
+  box1.style.transform = '';
+  box2.style.transform = '';
+
+  if (i < j) {
+    container.insertBefore(box2, box1);
+  } else {
+    container.insertBefore(box1, box2);
+  }
+
+  await sleep(100);
+}
+
+async function highlightSwap(arr, i, j, pivot) {
+  drawBoxes(arr, { pivot, swap: [i, j] }, `Swapping ${arr[i]} and ${arr[j]}`);
+  await animateSwapVisual(i, j);
+  [arr[i], arr[j]] = [arr[j], arr[i]];
+  drawBoxes(arr, { pivot, swap: [i, j] }, `Swapped ${arr[i]} and ${arr[j]}`);
+  await sleep(getSpeed());
+}
+
+async function quickSort(arr, left = 0, right = arr.length - 1) {
+  if (left < right) {
+    let pivotIndex = await partition(arr, left, right);
+    await quickSort(arr, left, pivotIndex - 1);
+    await quickSort(arr, pivotIndex + 1, right);
+  }
+  return arr;
+}
+
+async function partition(arr, left, right) {
+  let pivot = arr[right];
+  let i = left - 1;
+  drawBoxes(arr, { pivot: right }, `Partitioning with pivot ${pivot}`);
+  await sleep(getSpeed());
+
+  for (let j = left; j < right; j++) {
+    drawBoxes(arr, { pivot: right, compare: [j] }, `Comparing ${arr[j]} with pivot ${pivot}`);
+    await sleep(getSpeed());
+    if (arr[j] < pivot) {
+      i++;
+      await highlightSwap(arr, i, j, right);
+    }
+  }
+
+  await highlightSwap(arr, i + 1, right, right);
+  drawBoxes(arr, { sorted: [i + 1] }, `Pivot ${pivot} placed at correct position`);
+  await sleep(getSpeed());
+  return i + 1;
+}
+
+async function startSort() {
+  const inputs = document.querySelectorAll("#inputs input");
+  const values = Array.from(inputs).map(input => parseInt(input.value)).filter(x => !isNaN(x));
+  if (values.length === 0) {
+    alert("Please enter values to sort.");
+    return;
+  }
+  await quickSort(values);
+  drawBoxes(values, { sorted: values.map((_, i) => i) }, "Final Sorted Array");
+}
+
+function stopSorting() {
+  alert("Stop Sorting is not yet implemented.");
+}
+</script>
+</body>
+</html>

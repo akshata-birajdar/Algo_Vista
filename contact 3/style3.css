@@ -1,0 +1,168 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: white;
+}
+
+/* Hero Section */
+.contact-hero {
+    background: linear-gradient(135deg, #000000, #222222);
+    color:  #05be4c;
+    text-align: center;
+    padding: 64px 20px;
+}
+.navbar{
+    width: 90%;
+    padding: 30px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+ }
+ .logo{
+   width: 160px;
+   margin-top: -20px;
+   margin-left: -100px;
+   cursor: pointer;
+
+ }
+ .navbar ul li{
+   list-style: none;
+   display:inline-block;
+   margin: 20px;
+
+ }
+ .head{
+    font-size: 28px;
+ }
+ .navbar ul li a{
+   text-decoration: none;
+   transform: 0.5s;
+   color: white;
+   font-weight: 600;
+   padding: 15px;
+   font-size: 18px;
+ }
+ li a:hover{
+   background-color:transparent;
+  transition: 0.5s;
+  color: white;
+  border: 1px solid white;
+
+ }
+ .navbar a:hover{
+   color: rgb(255, 255, 255);
+ }
+
+
+/* Contact Section */
+.contact-section {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px;
+    align-items: center;
+}
+
+.contact-info {
+    max-width: 40%;
+}
+
+.contact-details p {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin: 15px 0;
+}
+
+.contact-details img {
+    width: 24px;
+    margin-right: 16px;
+}
+
+/* Contact Form */
+.contact-form {
+    background: #222;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,255,0,0.5);
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form input, .contact-form textarea {
+    background: #333;
+    border: none;
+    padding: 10px;
+    margin: 10px 0;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.contact-form input::placeholder, .contact-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.contact-form button {
+    background: #05be4c;
+    color: black;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.contact-form button:hover {
+    background:  #069b3d;
+    color: black;
+}
+
+/* Map Section */
+/* .map-section {
+    text-align: center;
+    padding: 50px;
+}
+
+.map-section iframe {
+    width: 80%;
+    height: 300px;
+    border-radius: 10px;
+} */
+
+/* CTA Section */
+.cta {
+    text-align: center;
+    padding: 39px;
+    margin-top: 46px;
+    background:  #05be4c;
+    color: black;
+}
+
+.cta .btn {
+    background: black;
+    color:  #05be4c;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.cta .btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Footer */
+footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}

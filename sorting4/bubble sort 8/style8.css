@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #111;
+}
+
+.back-btn {
+    background-color: #56fa28;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: auto;
+}
+
+.logo {
+    height: 40px;
+}
+
+.title-section {
+    text-align: center;
+    padding: 20px;
+    color: #56fa28;
+}
+
+.title-section p {
+    color: #fff;
+    font-size: 16px;
+}
+
+.visual-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #111;
+}
+
+#bar-container {
+    width: 90%;
+    height: 300px;
+}
+
+.details-section {
+    display: flex;
+    justify-content: space-around;
+    padding: 30px;
+    background-color: #000;
+    gap: 20px;
+}
+
+.code-block, .algo-explanation {
+    width: 45%;
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(86, 250, 40, 0.5);
+}
+
+pre {
+    color: #56fa28;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+.settings-section {
+    padding: 20px;
+    text-align: center;
+    background-color: #111;
+}
+
+.controls input[type="text"], .controls input[type="range"] {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.controls button {
+    background-color: #56fa28;
+    color: black;
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    margin-left: 50%;
+    margin-top: 13px;
+}
+
+.controls button:hover {
+    background-color: white;
+}

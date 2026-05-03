@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Queue Visualization</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #0e0e0e;
+      color: white;
+    }
+
+    .sidebar {
+      width: 280px;
+      background:linear-gradient(to bottom, #0d0e10, #1a1c1f, #2a2d30); /* dark gradient */
+      color: white;
+      padding: 20px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+      position: fixed;
+      height: 100vh;
+    }
+
+    .sidebar h2 {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+
+    .sidebar button {
+      background-color: #1a281f;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .sidebar button:hover {
+      background-color:  #444342;
+    }
+
+    .main {
+      margin-left: 280px;
+      padding: 30px;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    h1 {
+      color: #ccc;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      max-width: 700px;
+      margin: auto;
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .code-box {
+      background: linear-gradient(to bottom, #1c1e22, #2a2d30, #3a3d40); /* dark gradient */
+            color: #ecf0f1;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+      font-family: monospace;
+      white-space: pre-line;
+      text-align: left;
+      margin: auto;
+      width: fit-content;
+      
+    }
+
+    .input-section {
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      font-size: 16px;
+      margin-right: 8px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .input-section button {
+      background-color: #05be4c;
+      color: black;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    .input-section button:hover {
+      background-color: white;
+    }
+
+    .queue-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .queue-box {
+      width: 60px;
+      height: 60px;
+      background-color: #111;
+      border: 2px solid #05be4c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #05be4c;
+      border-radius: 8px;
+    }
+
+    #status {
+      margin-top: 20px;
+      padding: 10px;
+      display: inline-block;
+      background-color: #e67e22;
+      color: black;
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 40px;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <a href="D:\ALGO VISTA\data Structure6\index6.html"><button>← Go Back</button></a>
+    <h2>Queue Visualizer</h2>
+    <p>→ FIFO Order</p>
+    <p>→ Use enqueue to add elements</p>
+    <p>→ Dequeue removes the first element</p>
+  </div>
+
+  <div class="main">
+    <h1>📚 Queue Evaluation Visualizer</h1>
+    <div class="description">
+      Queues follow the FIFO (First In First Out) principle. Use enqueue to add elements and dequeue to remove them in order.
+    </div>
+
+    <div class="code-box">
+queue = []<br>
+enqueue(value):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;queue.append(value)<br>
+dequeue():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if queue is not empty:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue.pop(0)
+    </div>
+
+    <div class="input-section">
+      <input type="text" id="queueInput" placeholder="Enter value" />
+      <button onclick="enqueueQueue()">Enqueue</button>
+      <button onclick="dequeueQueue()">Dequeue</button>
+      <button onclick="resetQueue()">Reset</button>
+    </div>
+
+    <div class="queue-container" id="queueContainer"></div>
+    <div id="status"></div>
+
+    <footer>© 2025 AlgoVisualizer | <a href="#" style="color:#05be4c;">GitHub</a></footer>
+  </div>
+
+  <script>
+    const queue = [];
+    const queueContainer = document.getElementById("queueContainer");
+    const status = document.getElementById("status");
+
+    function speak(message) {
+      const synth = window.speechSynthesis;
+      const utter = new SpeechSynthesisUtterance(message);
+      synth.cancel();
+      synth.speak(utter);
+    }
+
+    function playBeep(freq = 500, duration = 200) {
+      const context = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      oscillator.frequency.value = freq;
+      oscillator.type = "sine";
+      oscillator.start();
+      setTimeout(() => oscillator.stop(), duration);
+    }
+
+    function drawQueue() {
+      queueContainer.innerHTML = "";
+      queue.forEach(value => {
+        const box = document.createElement("div");
+        box.className = "queue-box";
+        box.innerText = value;
+        queueContainer.appendChild(box);
+      });
+    }
+
+    function enqueueQueue() {
+      const value = document.getElementById("queueInput").value.trim();
+      if (value === "") {
+        status.innerText = "Please enter a value to enqueue.";
+        speak("Enter a value to enqueue.");
+        return;
+      }
+      queue.push(value);
+      drawQueue();
+      status.innerText = `${value} enqueued in queue.`;
+      speak(`${value} enqueued in queue.`);
+      playBeep();
+      document.getElementById("queueInput").value = "";
+    }
+
+    function dequeueQueue() {
+      if (queue.length === 0) {
+        status.innerText = "Queue is empty. Cannot dequeue.";
+        speak("Queue is empty. Cannot dequeue.");
+        return;
+      }
+      const dequeued = queue.shift();
+      drawQueue();
+      status.innerText = `${dequeued} dequeued from queue.`;
+      speak(`${dequeued} dequeued from queue.`);
+      playBeep(300);
+    }
+
+    function resetQueue() {
+      queue.length = 0;
+      drawQueue();
+      status.innerText = "Queue reset.";
+      speak("Queue reset.");
+      playBeep(200);
+    }
+
+    drawQueue();
+  </script>
+</body>
+</html>
